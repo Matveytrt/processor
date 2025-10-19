@@ -5,6 +5,12 @@
         "deque": "cpp",
         "initializer_list": "cpp",
         "stack": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "system_error": "cpp",
+        "type_traits": "cpp",
+        "xlocmon": "cpp",
+        "xtr1common": "cpp",
+        "iterator": "cpp",
+        "memory": "cpp"
     }
 }

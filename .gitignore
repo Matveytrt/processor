@@ -1,3 +1,7 @@
 /assembler.o
-/M.bat
 /workwithfile.o
+/processor.o
+/stack.o
+/functions.o
+/asm
+/proc

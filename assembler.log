@@ -1,0 +1,310 @@
+PUSH command #1
+cmd second value = 35
+POPR command #2
+cmd reg name = RAX
+PUSH command #3
+cmd second value = 46
+POPR command #4
+cmd reg name = RBX
+PUSH command #5
+cmd second value = 900
+POPR command #6
+cmd reg name = RCX
+PUSH command #7
+cmd second value = 30
+POPR command #8
+cmd reg name = RCY
+IN command #9
+POPR command #10
+cmd reg name = RDX
+IN command #11
+POPR command #12
+cmd reg name = AX
+IN command #13
+POPR command #14
+cmd reg name = AY
+PUSH command #15
+cmd second value = 0
+POPR command #16
+cmd reg name = BX
+PUSH command #17
+cmd second value = 0
+POPR command #18
+cmd reg name = CX
+PUSH command #19
+cmd second value = 0
+POPR command #20
+cmd reg name = CY
+DUMP command #21
+defined tag_num = :9
+PUSHR command #22
+cmd reg name = RCX
+PUSHR command #23
+cmd reg name = BX
+JB command #24
+label[:6] = 0
+DRAW command #25
+HLT command #26
+defined tag_num = :1
+PUSHR command #27
+cmd reg name = AX
+PUSHR command #28
+cmd reg name = CX
+SUB command #29
+PUSH command #30
+cmd second value = 1
+ADD command #31
+PUSHR command #32
+cmd reg name = AX
+PUSHR command #33
+cmd reg name = CX
+SUB command #34
+PUSH command #35
+cmd second value = 1
+ADD command #36
+MUL command #37
+RET command #38
+defined tag_num = :2
+PUSHR command #39
+cmd reg name = AY
+PUSHR command #40
+cmd reg name = CY
+SUB command #41
+PUSH command #42
+cmd second value = 1
+ADD command #43
+PUSHR command #44
+cmd reg name = AY
+PUSHR command #45
+cmd reg name = CY
+SUB command #46
+PUSH command #47
+cmd second value = 1
+ADD command #48
+MUL command #49
+RET command #50
+defined tag_num = :3
+PUSHR command #51
+cmd reg name = RDX
+PUSHR command #52
+cmd reg name = RDX
+MUL command #53
+CALL command #54
+label[:2] = 64
+CALL command #55
+label[:1] = 46
+ADD command #56
+SUB command #57
+RET command #58
+defined tag_num = :4
+PUSHR command #59
+cmd reg name = BX
+PUSHR command #60
+cmd reg name = RCY
+DIV command #61
+POPR command #62
+cmd reg name = CY
+PUSHR command #63
+cmd reg name = BX
+PUSHR command #64
+cmd reg name = CY
+PUSHR command #65
+cmd reg name = RCY
+MUL command #66
+SUB command #67
+POPR command #68
+cmd reg name = CX
+RET command #69
+defined tag_num = :5
+PUSHR command #70
+cmd reg name = BX
+PUSH command #71
+cmd second value = 1
+ADD command #72
+POPR command #73
+cmd reg name = BX
+RET command #74
+defined tag_num = :6
+CALL command #75
+label[:4] = 94
+CALL command #76
+label[:3] = 82
+PUSH command #77
+cmd second value = 0
+JBE command #78
+label[:7] = 0
+PUSHR command #79
+cmd reg name = RBX
+POPM command #80
+ram_regname = BX
+defined tag_num = :8
+CALL command #81
+label[:5] = 112
+JMP command #82
+label[:9] = 38
+defined tag_num = :7
+PUSHR command #83
+cmd reg name = RAX
+POPM command #84
+ram_regname = BX
+JMP command #85
+label[:8] = 132
+info about assembling:
+size = 142, ncommands = 85
+
+
+PUSH command #1
+cmd second value = 35
+POPR command #2
+cmd reg name = RAX
+PUSH command #3
+cmd second value = 46
+POPR command #4
+cmd reg name = RBX
+PUSH command #5
+cmd second value = 900
+POPR command #6
+cmd reg name = RCX
+PUSH command #7
+cmd second value = 30
+POPR command #8
+cmd reg name = RCY
+IN command #9
+POPR command #10
+cmd reg name = RDX
+IN command #11
+POPR command #12
+cmd reg name = AX
+IN command #13
+POPR command #14
+cmd reg name = AY
+PUSH command #15
+cmd second value = 0
+POPR command #16
+cmd reg name = BX
+PUSH command #17
+cmd second value = 0
+POPR command #18
+cmd reg name = CX
+PUSH command #19
+cmd second value = 0
+POPR command #20
+cmd reg name = CY
+DUMP command #21
+defined tag_num = :9
+PUSHR command #22
+cmd reg name = RCX
+PUSHR command #23
+cmd reg name = BX
+JB command #24
+label[:6] = 120
+DRAW command #25
+HLT command #26
+defined tag_num = :1
+PUSHR command #27
+cmd reg name = AX
+PUSHR command #28
+cmd reg name = CX
+SUB command #29
+PUSH command #30
+cmd second value = 1
+ADD command #31
+PUSHR command #32
+cmd reg name = AX
+PUSHR command #33
+cmd reg name = CX
+SUB command #34
+PUSH command #35
+cmd second value = 1
+ADD command #36
+MUL command #37
+RET command #38
+defined tag_num = :2
+PUSHR command #39
+cmd reg name = AY
+PUSHR command #40
+cmd reg name = CY
+SUB command #41
+PUSH command #42
+cmd second value = 1
+ADD command #43
+PUSHR command #44
+cmd reg name = AY
+PUSHR command #45
+cmd reg name = CY
+SUB command #46
+PUSH command #47
+cmd second value = 1
+ADD command #48
+MUL command #49
+RET command #50
+defined tag_num = :3
+PUSHR command #51
+cmd reg name = RDX
+PUSHR command #52
+cmd reg name = RDX
+MUL command #53
+CALL command #54
+label[:2] = 64
+CALL command #55
+label[:1] = 46
+ADD command #56
+SUB command #57
+RET command #58
+defined tag_num = :4
+PUSHR command #59
+cmd reg name = BX
+PUSHR command #60
+cmd reg name = RCY
+DIV command #61
+POPR command #62
+cmd reg name = CY
+PUSHR command #63
+cmd reg name = BX
+PUSHR command #64
+cmd reg name = CY
+PUSHR command #65
+cmd reg name = RCY
+MUL command #66
+SUB command #67
+POPR command #68
+cmd reg name = CX
+RET command #69
+defined tag_num = :5
+PUSHR command #70
+cmd reg name = BX
+PUSH command #71
+cmd second value = 1
+ADD command #72
+POPR command #73
+cmd reg name = BX
+RET command #74
+defined tag_num = :6
+CALL command #75
+label[:4] = 94
+CALL command #76
+label[:3] = 82
+PUSH command #77
+cmd second value = 0
+JBE command #78
+label[:7] = 136
+PUSHR command #79
+cmd reg name = RBX
+POPM command #80
+ram_regname = BX
+defined tag_num = :8
+CALL command #81
+label[:5] = 112
+JMP command #82
+label[:9] = 38
+defined tag_num = :7
+PUSHR command #83
+cmd reg name = RAX
+POPM command #84
+ram_regname = BX
+JMP command #85
+label[:8] = 132
+info about assembling:
+size = 142, ncommands = 85
+
+

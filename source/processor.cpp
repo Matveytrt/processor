@@ -1,217 +1,108 @@
 #include "processor.h"
 
-FILE *logfile = fopen("logfile.log", "w");
-
+FILE *Logfile = fopen("proc.log", "w");
 const char *GetName();
 
 int main()
 {
-    Processor cpu = {};    
+    Processor_t spu = {};  
+ 
+    InitSPU(&spu);
+
+    Processing(&spu);
+
+    DestroySPU(&spu);
+    //printf("ram[5] = %d, ram[3] = %d\n", spu.ram[5], spu.ram[3]);
+    fclose(Logfile);
+}
+
+void InitSPU(Processor_t *spu)
+{
+    assert(spu);
 
     size_t buff_size = 0;
-    StackElement_t regs_data[NREGS] = {};
-    cpu.bytecode = (StackElement_t*) ReadBuffResult(GetName(), "rb", &buff_size, sizeof(StackElement_t));
-    //printf("%d\n", cpu.bytecode[2]);
-    assert(cpu.bytecode);
-    Executor(cpu.bytecode, regs_data);
+    spu->ip = 0;
 
+    spu->bytecode = (StackElement_t*) ReadBuffResult(GetName(), "rb", &buff_size, sizeof(StackElement_t));
+    assert(spu->bytecode);
 
-    free(cpu.bytecode);
+    spu->regs = (StackElement_t*) calloc(Nregs, sizeof(StackElement_t));
+    assert(spu->regs);
+
+    spu->ram = (StackElement_t*) calloc(RamSize, sizeof(StackElement_t));
+    assert(spu->ram);
+    
+    INIT(spu->retaddr, RetSize);
+
+}
+
+void Processing(Processor_t *spu)
+{
+    assert(spu);
+    
+    const CmdFunc_t cmd[Nfuncs] = {  
+                                        {PUSH_C,    Push},
+                                        {POP_C,     Pop}, 
+                                        {ADD_C,     Add}, 
+                                        {SUB_C,     Sub}, 
+                                        {MUL_C,     Mul}, 
+                                        {DIV_C,     Div}, 
+                                        {SQRT_C,    Sqrt},
+                                        {IN_C,      In}, 
+                                        {DUMP_C,    Dump}, 
+                                        {CLEAR_C,   Clear}, 
+                                        {INIT_C,    Init}, 
+                                        {PUSHR_C,   PushR}, 
+                                        {POPR_C,    PopR}, 
+                                        {JB_C,      JB}, 
+                                        {JBE_C,     JBE}, 
+                                        {JA_C,      JA}, 
+                                        {JAE_C,     JAE}, 
+                                        {JE_C,      JE}, 
+                                        {JNE_C,     JNE}, 
+                                        {JMP_C,     JUMP},
+                                        {CALL_C,    CALL},
+                                        {RET_C,     RET},
+                                        {PUSHM_C,   PUSHM},
+                                        {POPM_C,    POPM},
+                                        {DRAW_C,    DRAW},
+                                     };
+    int command = spu->bytecode[spu->ip];
+    INIT(spu->stk, STARTCAPACITY);
+    
+    while (command != HLT_C)
+    {
+        for(int i = 0; i < Nfuncs; i++)
+        {
+            if (command == cmd[i].code)
+            {
+                cmd[i].ptr_func(spu);
+                //printf("command = %d, ip = %d\n", cmd[i].code, spu->ip);
+                break;
+            }
+        }
+        command = spu->bytecode[spu->ip];
+        //printf("new command = %d, ip = %d\n", command, spu->ip);
+    }
+
+    DUMP(spu->stk);
+    DESTROY(spu->stk);
+}
+
+void DestroySPU(Processor_t *spu)
+{
+    assert(spu);
+
+    DESTROY(spu->retaddr);
+    free(spu->ram);
+    free(spu->regs);
+    free(spu->bytecode);
 }
 
 const char *GetName()
 {
-    const char *file_name = "bytecodefile2.bin";
+    const char *file_name = "bytecodefile2.txt";
     assert(file_name);
 
     return file_name;    
-}
-
-void Executor(StackElement_t data[], StackElement_t regs_data[])
-{
-    assert(data);
-
-    StackErr_t error = {};
-    Stack_t stk = {};
-    size_t ip = 0;
-    
-    INIT(stk, STARTCAPACITY);
-    
-    int command = data[ip];
-    int val1, val2;
-    int value;
-
-    while (command != HLT_C)
-    {
-        //printf("%d\n", command);
-        switch (command)
-        {
-        case PUSH_C:
-            PUSH(stk, data[ip + 1]);
-            
-            ip += 2;
-            break;
-        case POP_C:
-            POP(stk, value);
-            
-            ip++;
-            break;
-        case ADD_C:
-            POP(stk, val1);
-            POP(stk, val2);
-            PUSH(stk, val1 + val2);
-            
-            ip++;
-            break;
-        case SUB_C:
-            POP(stk, val1);
-            POP(stk, val2);
-            PUSH(stk, val2 - val1);
-
-            ip++;
-            break;
-        case MUL_C:
-            POP(stk, val1);
-            POP(stk, val2);
-            PUSH(stk, val1 * val2);
-
-            ip++;
-            break;
-        case DIV_C:
-            POP(stk, val1);
-            POP(stk, val2);
-            PUSH(stk, val2 / val1);
-
-            ip++;
-            break;
-        case SQRT_C:
-            POP(stk, value);
-            PUSH(stk, (StackElement_t)sqrt(value));
-
-            ip++;
-            break;
-        case IN_C:
-            scanf("%d", &value);
-            PUSH(stk, value);
-
-            ip++;
-            break;
-        case DUMP_C:
-            DUMP(stk);
-
-            ip++;
-            break;
-        case CLEAR_C:
-            while(stk.size > 0)
-            {   
-                POP(stk, value);
-            }
-
-            ip++;
-            break; 
-        case INIT_C:
-            DESTROY(stk);
-            INIT(stk, data[ip + 1]);
-
-            ip += 2;
-            break;
-        case PUSHR_C:
-            PUSH(stk, regs_data[data[ip + 1]]);
-
-            ip += 2;
-            break;
-        case POPR_C:
-            POP(stk, regs_data[data[ip + 1]]);
-
-            ip += 2;
-            break;
-        case JB_C:
-            POP(stk, val1);
-            POP(stk, val2);
-            if (val1 < val2)
-            {
-                ip = data[ip + 1];
-            }
-            else
-            {
-                ip += 2;
-            }
-
-            break;
-        case JBE_C:
-            POP(stk, val1);
-            POP(stk, val2);
-            if (val1 <= val2)
-            {
-                ip = data[ip + 1];
-            }
-            else
-            {
-                ip += 2;
-            }
-
-            break;
-        case JA_C:
-            POP(stk, val1);
-            POP(stk, val2);
-            if (val1 > val2)
-            {
-                ip = data[ip + 1];
-            }
-            else
-            {
-                ip += 2;
-            }
-
-            break;
-        case JAE_C:
-            POP(stk, val1);
-            POP(stk, val2);
-            if (val1 >= val2)
-            {
-                ip = data[ip + 1];
-            }
-            else
-            {
-                ip += 2;
-            }
-
-            break;
-        case JE_C:
-            POP(stk, val1);
-            POP(stk, val2);
-            if (val1 == val2)
-            {
-                ip = data[ip + 1];
-            }
-            else
-            {
-                ip += 2;
-            }
-
-            break;
-        case JNE_C:
-            POP(stk, val1);
-            POP(stk, val2);
-            if (val1 != val2)
-            {
-                ip = data[ip + 1];
-            }
-            else
-            {
-                ip += 2;
-            }
-
-            break;
-        case JMP_C:
-            
-            ip = data[ip + 1];
-            break;    
-        default:
-            break;
-        }
-
-        command = data[ip];  
-    }
-    DESTROY(stk);
 }

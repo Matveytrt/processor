@@ -13,18 +13,18 @@
 #define DEBUG
 #define CANARY_DEBUG
 
-#define ERROR        fprintf(logfile, "error: %d line: %d\n", err.code, err.line);
-#define INFO         fprintf(logfile, "stack size = %ld, capacity = %ld\n", stk->size, stk->capacity);
-#define NEWLINE      fprintf(logfile, "\n");
+#define ERROR        fprintf(Logfile, "error: %d line: %d\n", err.code, err.line);
+#define INFO         fprintf(Logfile, "stack size = %ld, capacity = %ld\n", stk->size, stk->capacity);
+#define NEWLINE      fprintf(Logfile, "\n");
 #define VERIFY(stk)  StackVerify(stk, line)
 #define CANARY       0xEDAA
 #define POISON       0xDEAD
 #define ERRORPOINT   0xBADDD
 #define WARNINGPOINT 0xBED
-#define NOERROR      0
+#define NOERROR      0x0
 #define CHECKFUNCERROR(error)   if (error.type == ERRORPOINT)                                         \
                                 {                                                                     \
-                                fprintf(logfile, "err.code = %d, line: %d\n", error.code, error.line);          \
+                                fprintf(Logfile, "err.code = %d, line: %d\n", error.code, error.line);\
                                 return error;                                                         \
                                 } 
 
@@ -48,15 +48,12 @@ StackErr_t StackPush(Stack_t *stk, int value, int line);
 StackErr_t StackPop(Stack_t *stk, StackElement_t *last_input, int line);
 StackErr_t StackDestroy(Stack_t *stk, int line);
 StackErr_t StackVerify(Stack_t *stk, int line);
-StackErr_t StackDump(Stack_t *stk, int line, const char *filename);
+StackErr_t StackDump(Stack_t *stk, int line, const char *filename, const char *stkname);
 StackErr_t AllocationStk(Stack_t *stk);
-StackErr_t StackOk(StackErr_t err);
+StackErr_t StackOk(StackErr_t err, int line);
 int ErrorType(StackErr_t err);
 Ssize_t CalcHASH(Stack_t *stk);
 void CheckSize(Stack_t *stk);
-
-
-#endif
 
 #ifdef DEBUG
     #define ONDEBUG(func) func
@@ -69,3 +66,6 @@ void CheckSize(Stack_t *stk);
 #else
     #define CANDEBUG(func) 
 #endif
+
+#endif
+

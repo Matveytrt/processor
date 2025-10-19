@@ -4,6 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-extern FILE *logfile;
+extern FILE *Logfile;
 
 #endif

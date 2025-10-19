@@ -1,3 +1,6 @@
+#ifndef ASSEMBLER_H
+#define ASSEMBLER_H
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -6,72 +9,50 @@
 #include <sys/stat.h>
 #include <ctype.h>
 
-#include "cpustruct.h"
+#include "spustruct.h"
 #include "logfile.h"
 #include "workwithfile.h"
+#include "stackstruct.h"
 
-enum commandcodes
+struct Assembler_t 
 {
-    HLT_C    = 0,
-    PUSH_C   = 1,
-    POP_C    = 2,
-    ADD_C    = 3,
-    SUB_C    = 4,
-    MUL_C    = 5,
-    DIV_C    = 6,
-    SQRT_C   = 7,
-    IN_C     = 8,
-    DUMP_C   = 9,
-    CLEAR_C  = 10,
-    INIT_C   = 11,
-    PUSHR_C  = 12,
-    POPR_C   = 13,
-    JB_C     = 14,
-    JBE_C    = 15,
-    JA_C     = 16,
-    JAE_C    = 17,
-    JE_C     = 18,
-    JNE_C    = 19,
-    JMP_C    = 20,
+    int *labels;
+    StackElement_t *bytecode;
+    size_t bytecode_size;
 };
 
-enum registers
-{
-    RAX = 0,
-    RBX = 1,
-    RCX = 2,
-    RDX = 3,
-    AX  = 4,
-    BX  = 5,
-    CX  = 6,
-    DX  = 7,
-};
+void InitASM(Assembler_t *assembler);
+size_t Assembling(const char *buff, Assembler_t *assembler);
+void DestroyASM(Assembler_t *assembler);
 
-enum argtypes
-{
-    END_T     = 0,
-    SINGLE_T  = 1,
-    DOUBLE_T  = 2,
-    REGISTR_T = 3,
-    JMP_T     = 4,
-};
+#define DEBUGASM
+#define DEBUGCMD
+#define DEBUGLBL
 
-struct Command 
-{
-    int code;
-    const char *name;
-    int argtype;
-};
-
-size_t Assembler(char *buff, StackElement_t *bytecode, int *label);
-
-#define ERROR 0xBAD
-#define NCOMMANDS 21
 #define STARTSIZE buff_size / 2
-#define LABELSIZE 10
+#define LABELSIZE 30
 #define NOLABELPTR -1
+#define Brackets 2
+#define StrSize 20
 
-#define STEP    bytecode++;              \
-                size++;                  \
-                buff += offset;
+#define Bytecode_step       assembler->bytecode++;              \
+                            size++;                             \
+                            buff += offset;
  
+#endif
+
+#ifdef DEBUGASM
+    #define ONDEBUGASM(func) func
+#else
+    #define ONDEBUGASM(func) 
+#endif
+#ifdef DEBUGCMD
+    #define ONDEBUGCMD(func) func
+#else
+    #define ONDEBUGCMD(func) 
+#endif
+#ifdef DEBUGLBL
+    #define ONDEBUGLBL(func) func
+#else
+    #define ONDEBUGLBL(func) 
+#endif

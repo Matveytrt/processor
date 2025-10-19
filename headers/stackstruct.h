@@ -22,5 +22,15 @@ struct StackErr_t
     int type;
 };
 
+#define INIT(stk, capacity) StackInit(&stk, capacity, __LINE__);
+
+#define PUSH(stk, value)    StackPush(&stk, value, __LINE__);
+
+#define POP(stk, value)     StackPop(&stk, &value, __LINE__);
+
+#define DESTROY(stk)        StackDestroy(&stk, __LINE__);
+
+#define DUMP(stk)           StackDump(&stk, __LINE__, __FILE__, #stk);
+
 #endif 
  

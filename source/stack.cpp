@@ -2,7 +2,7 @@
 
 StackErr_t StackInit(Stack_t *stk, int capacity, int line)
 { 
-    ONDEBUG(assert(stk);)
+    assert(stk);
     StackErr_t error ={};
 
     stk->size = 0;
@@ -37,9 +37,9 @@ StackErr_t StackInit(Stack_t *stk, int capacity, int line)
 
     error = VERIFY(stk);
     //printf("%d\n", error.code);
-    if (error.code == 0)
+    if (error.code == NOERROR)
     {
-        fprintf(logfile, "Initialisation succses\n");
+        fprintf(Logfile, "Initialisation succses\n");
     }
 
     return error;
@@ -47,7 +47,7 @@ StackErr_t StackInit(Stack_t *stk, int capacity, int line)
 
 StackErr_t StackPush(Stack_t *stk, int value, int line)
 {
-    ONDEBUG(assert(stk);)
+    assert(stk);
 
     StackErr_t error = VERIFY(stk);
     CHECKFUNCERROR(error)
@@ -58,7 +58,7 @@ StackErr_t StackPush(Stack_t *stk, int value, int line)
     stk->data[stk->size + stk->flag] = value;
     ONDEBUG(stk->hash = CalcHASH(stk);)
 
-    fprintf(logfile, "line: %d pushed value = %d\n", line, stk->data[stk->size + stk->flag]);
+    fprintf(Logfile, "line: %d pushed value = %d\n", line, stk->data[stk->size + stk->flag]);
     INFO
     NEWLINE
 
@@ -68,8 +68,8 @@ StackErr_t StackPush(Stack_t *stk, int value, int line)
 
 StackErr_t StackPop(Stack_t *stk, StackElement_t *last_input, int line)
 {
-    ONDEBUG(assert(stk);)
-    ONDEBUG(assert(last_input);)
+    assert(stk);
+    assert(last_input);
 
     StackErr_t error = VERIFY(stk);
     CHECKFUNCERROR(error)
@@ -87,14 +87,14 @@ StackErr_t StackPop(Stack_t *stk, StackElement_t *last_input, int line)
         stk->size--;
 
         ONDEBUG(stk->hash = CalcHASH(stk);)
-        fprintf(logfile, "line: %d popped value = %d\n", line,  *last_input);
+        fprintf(Logfile, "line: %d popped value = %d\n", line,  *last_input);
     }
     else
     {
-        fprintf(logfile, "can't pop: empty stack\n");
+        fprintf(Logfile, "can't pop: empty stack\n");
         error.code = SIZELIMIT;
         *last_input = 0;
-        error = StackOk(error);
+        error = StackOk(error, line);
         return error;
 
     }
@@ -108,12 +108,12 @@ StackErr_t StackPop(Stack_t *stk, StackElement_t *last_input, int line)
 
 StackErr_t StackDestroy(Stack_t *stk, int line)
 {
-    ONDEBUG(assert(stk);)
+    assert(stk);
     StackErr_t error = VERIFY(stk);
     CHECKFUNCERROR(error)
 
     NEWLINE
-    fprintf(logfile, "info about stack before death:\n");
+    fprintf(Logfile, "info about stack before death:\n");
     INFO
 
     free(stk->data);
@@ -122,7 +122,7 @@ StackErr_t StackDestroy(Stack_t *stk, int line)
 
 StackErr_t StackVerify(Stack_t *stk, int line)
 {  
-    ONDEBUG(assert(stk);)
+    assert(stk);
 
     StackErr_t err = {};
     err.line = line;
@@ -134,41 +134,43 @@ StackErr_t StackVerify(Stack_t *stk, int line)
             err.code |= NULLSTKPTR;
             printf("stkptr err.code = %d\n", err.code);
         }
-        if (stk->canaryleft != CANARY)
-        {
-            err.code |= STRUCTATTACKLEFT;
-            printf("left err.code = %d\n", err.code);
-            err = StackOk(err);
-            return err;
-        }
-        if (stk->canaryright != CANARY)
-        {
-            err.code |= STRUCTATTACKRIGHT; 
-            printf("right err.code = %d\n", err.code);
-            err = StackOk(err);
-            return err; 
-        }
+        #ifdef CANARY_DEBUG
+            if (stk->canaryleft != CANARY)
+            {
+                err.code |= STRUCTATTACKLEFT;
+                printf("left err.code = %d\n", err.code);
+                err = StackOk(err, line);
+                return err;
+            }
+            if (stk->canaryright != CANARY)
+            {
+                err.code |= STRUCTATTACKRIGHT; 
+                printf("right err.code = %d\n", err.code);
+                err = StackOk(err, line);
+                return err; 
+            }
+        #endif
         if (stk->data == NULL)
         {
             err.code |= NULLDATAPTR;
             printf("dataptr err.code = %d\n", err.code);
-            err = StackOk(err);
+            err = StackOk(err, line);
             return err;
         }
 
         else
         {
-            if (stk->capacity < 2)
+            if (stk->capacity < 0)
             {
                 err.code |= NEGATIVECAPACITY;
                 printf("cap err.code = %d\n", err.code);
             }
-            for (Ssize_t i = 0; i <= stk->size; i++)
+            for (Ssize_t i = 0; i <= stk->size + stk->flag; i++)
             {
                 if (stk->data[i] == POISON)
                 {
                     err.code |= POISONING;
-                    fprintf(logfile, "Stack POISONing from %ld position\n", i); 
+                    fprintf(Logfile, "Stack POISONing from %ld position\n", i); 
                     break;
                 }
             }
@@ -176,7 +178,7 @@ StackErr_t StackVerify(Stack_t *stk, int line)
             {
                 err.code |= HASHTRASH;
             }
-            if ( (stk->size > (stk->capacity - 2)))
+            if ( stk->size > (stk->capacity CANDEBUG(-2)))
             {
                 err.code |= SIZELIMIT;
             }
@@ -198,19 +200,21 @@ StackErr_t StackVerify(Stack_t *stk, int line)
         }  
     #endif
 
-    err = StackOk(err);
+    err = StackOk(err, line);
     //printf("verify err.code = %d\n err.type = %d\n", err.code, err.type);
     return err;
 }
 
-StackErr_t StackDump(Stack_t *stk, int line, const char *filename)
+StackErr_t StackDump(Stack_t *stk, int line, const char *filename, const char *stkname)
 {
-    ONDEBUG(assert(stk);)
+    assert(stk);
+    assert(filename);
     StackErr_t error = StackVerify(stk, line);
     CHECKFUNCERROR(error)
 
     //printf("dump error.code = %d\n", error.code);
-    fprintf(logfile, "StackDump called from %s: %d\n", filename, line);
+    NEWLINE
+    fprintf(Logfile, "stack name: %s\nStackDump called from %s: %d\n", stkname, filename, line);
     
     if (error.type != ERRORPOINT)
     {
@@ -222,18 +226,18 @@ StackErr_t StackDump(Stack_t *stk, int line, const char *filename)
             #ifdef DEBUG
                 if (stk->data[i] == POISON) 
                 {
-                    fprintf(logfile, "*[%ld] = %d POISON\n", i, stk->data[i]);
+                    fprintf(Logfile, "*[%ld] = %d POISON\n", i, stk->data[i]);
                 }
                 else if (stk->data[i] == CANARY)
                 {
-                    fprintf(logfile, "*[%ld] = %d CANARY\n", i, stk->data[i]);
+                    fprintf(Logfile, "*[%ld] = %d CANARY\n", i, stk->data[i]);
                 } 
                 else //
                 {
-                    fprintf(logfile, "[%ld] = %d\n", i, stk->data[i]);
+                    fprintf(Logfile, "[%ld] = %d\n", i, stk->data[i]);
                 }
             #else
-                fprintf(logfile, "[%ld] = %d\n", i, stk->data[i]);
+                fprintf(Logfile, "[%ld] = %d\n", i, stk->data[i]);
             #endif    
         }
     }
@@ -257,7 +261,7 @@ Ssize_t CalcHASH(Stack_t *stk)
 
 void CheckSize(Stack_t *stk)
 {
-    ONDEBUG(assert(stk);)
+    assert(stk);
 
     Ssize_t last = stk->capacity - 1;
 
@@ -277,7 +281,7 @@ void CheckSize(Stack_t *stk)
         }
         
 
-        fprintf(logfile, "succesful reallocation\n"); 
+        fprintf(Logfile, "succesful reallocation\n"); 
 
         CANDEBUG(stk->data[stk->capacity - 1] = CANARY;)
         ONDEBUG(stk->hash = CalcHASH(stk);)
@@ -286,70 +290,67 @@ void CheckSize(Stack_t *stk)
 
 StackErr_t AllocationStk(Stack_t *stk)
 {
-    ONDEBUG(assert(stk);)
+    assert(stk);
     
     StackErr_t err = {};
-    StackElement_t *alloc_ptr = (StackElement_t*) calloc(stk->capacity, sizeof(StackElement_t));
+    StackElement_t *alloc_ptr = (StackElement_t*) calloc((size_t) stk->capacity, sizeof(StackElement_t));
 
     if (alloc_ptr == NULL)
     {
-        fprintf(logfile, "allocation error\n"); 
+        fprintf(Logfile, "allocation error\n"); 
         err.code = NULLDATAPTR;  
     }
     else
     {
         stk->data = alloc_ptr;
-        err.code = 0;
+        err.code = NOERROR;
     }
 
     return err;
 }
 
-StackErr_t StackOk(StackErr_t err)
+StackErr_t StackOk(StackErr_t err, int line)
 {
-    do
+    if ((err.code & NULLSTKPTR))
     {
-        if ((err.code & NULLSTKPTR) == NULLSTKPTR)
-        {
-            fprintf(logfile, "Error: Stack pointer = NULL\n");      
-        }
-        if ((err.code & NULLDATAPTR) == NULLDATAPTR)
-        {
-            fprintf(logfile, "Error: Data pointer = NULL\n");     
-        }
-        if ((err.code & NEGATIVECAPACITY) == NEGATIVECAPACITY)
-        {
-            fprintf(logfile, "Error: Capacity too small!\n");  
-        }
-        if ((err.code & STKATTACKLEFT) == STKATTACKLEFT)
-        {
-            fprintf(logfile, "Error: Stack attack from the left\n");      
-        }
-        if ((err.code & STKATTACKRIGHT) == STKATTACKRIGHT)
-        {
-            fprintf(logfile, "Error: Stack attack from the right\n");      
-        }
-        if ((err.code & STRUCTATTACKRIGHT) == STRUCTATTACKRIGHT)
-        {
-            fprintf(logfile, "Error: Struct attack from the right\n");      
-        }
-        if ((err.code & STRUCTATTACKLEFT) == STRUCTATTACKLEFT)
-        {
-            fprintf(logfile, "Error: Struct attack from the left\n");     
-        }
-        if ((err.code & SIZELIMIT) == SIZELIMIT)
-        {
-            fprintf(logfile, "Warning: Size limit errors\n");      
-        }
-        if ((err.code & POISONING) == POISONING)
-        {
-            fprintf(logfile, "Warning: Stack poisoning\n");      
-        }
-        if ((err.code & HASHTRASH) == HASHTRASH)
-        {
-            fprintf(logfile, "Error: hash violation\n");
-        }
-    } while(0);
+        fprintf(Logfile, "line: %d Error: Stack pointer = NULL\n", line);      
+    }
+    if (err.code & NULLDATAPTR)
+    {
+        fprintf(Logfile, "line: %d Error: Data pointer = NULL\n", line);     
+    }
+    if (err.code & NEGATIVECAPACITY)
+    {
+        fprintf(Logfile, "line: %d Error: Capacity too small!\n", line);  
+    }
+    if (err.code & STKATTACKLEFT)
+    {
+        fprintf(Logfile, "line: %d Error: Stack attack from the left\n", line);      
+    }
+    if (err.code & STKATTACKRIGHT)
+    {
+        fprintf(Logfile, "line: %d Error: Stack attack from the right\n", line);      
+    }
+    if (err.code & STRUCTATTACKRIGHT)
+    {
+        fprintf(Logfile, "line: %d Error: Struct attack from the right\n", line);      
+    }
+    if (err.code & STRUCTATTACKLEFT)
+    {
+        fprintf(Logfile, "line: %d Error: Struct attack from the left\n", line);     
+    }
+    if (err.code & SIZELIMIT)
+    {
+        fprintf(Logfile, "line: %d Warning: Size limit errors\n", line);      
+    }
+    if (err.code & POISONING)
+    {
+        fprintf(Logfile, "line: %d Warning: Stack poisoning\n", line);      
+    }
+    if (err.code & HASHTRASH)
+    {
+        fprintf(Logfile, "line: %d Error: hash violation\n", line);
+    }
     
     err.type = ErrorType(err);
     //ERROR
@@ -359,16 +360,16 @@ StackErr_t StackOk(StackErr_t err)
 
 int ErrorType(StackErr_t err)
 {
-    err.type = NOERROR;
-
-    if (err.code > ERRORS_END)
+    if (err.code == 0)
     {
-        err.type = WARNINGPOINT;
+        return NOERROR;
     }
-    else if(err.code > 0 && err.code < ERRORS_END)
+    else if (err.code < ERRORS_END)
     {
-        err.type = ERRORPOINT;
+        return ERRORPOINT;
     }
-
-    return err.type;
+    else
+    {
+        return WARNINGPOINT;
+    }
 }
