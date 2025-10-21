@@ -1,8 +1,7 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
-#include <math.h>
-
+#include "global.h"
 #include "stack.h"
 #include "stackstruct.h"
 #include "spustruct.h"
@@ -33,6 +32,14 @@ void PUSHM (Processor_t *spu);
 void POPM  (Processor_t *spu);
 void DRAW  (Processor_t *spu);
 
-#define Nfuncs 25
+#define INIT(stk, capacity) StackInit(&stk, capacity, __LINE__);
+
+#define PUSH(stk, value)    StackPush(&stk, value, __LINE__);
+
+#define POP(stk, value)     StackPop(&stk, &value, __LINE__);
+
+#define DESTROY(stk)        StackDestroy(&stk, __LINE__);
+
+#define DUMP(stk)           StackDump(&stk, __LINE__, __FILE__, #stk);
 
 #endif

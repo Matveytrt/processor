@@ -1,5 +1,11 @@
 #include "functions.h"
 
+#define DO(sign)                                \
+POP(spu->stk, val1)                             \
+POP(spu->stk, val2)                             \
+PUSH(spu->stk, val2 sign val1)                  \
+spu->ip++; 
+
 #define JMP(sign)                           \
 int val1 = 0, val2 = 0;                     \
 POP(spu->stk, val1)                         \
@@ -12,12 +18,6 @@ else                                        \
 {                                           \
     spu->ip += 2;                           \
 }
-
-#define DO(sign)                                \
-POP(spu->stk, val1)                             \
-POP(spu->stk, val2)                             \
-PUSH(spu->stk, val2 sign val1)                  \
-spu->ip++; 
 
 
 void Push(Processor_t *spu)

@@ -1,14 +1,8 @@
 #ifndef STACK_H
 #define STACK_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <sys/types.h>
-#include <assert.h>
-
 #include "stackstruct.h"
-#include "logfile.h"
+#include "global.h"
 
 #define DEBUG
 #define CANARY_DEBUG

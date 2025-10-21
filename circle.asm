@@ -20,7 +20,7 @@ PUSH 0
 POPR CY ;y
 DUMP
 
-:9 ;do while ram_index < ramsize
+:cycle
 PUSHR RCX ;ramsize
 PUSHR BX ;index
 JB :6 ;if ram_index < ramsize
@@ -94,7 +94,7 @@ PUSHR RBX ;fill [.]
 POPM [BX]
 :8 ;end of fill
 CALL :5 ;next step
-JMP :9
+JMP :cycle
 
 :7
 PUSHR RAX ;fill [#]

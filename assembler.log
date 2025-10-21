@@ -1,309 +1,747 @@
 PUSH command #1
+hash = 76495910,
 cmd second value = 35
+
+
 POPR command #2
+hash = 76314591,
 cmd reg name = RAX
+
+
 PUSH command #3
+hash = 76495910,
 cmd second value = 46
+
 POPR command #4
+hash = 76314591,
 cmd reg name = RBX
+
+
 PUSH command #5
+hash = 76495910,
 cmd second value = 900
+
 POPR command #6
+hash = 76314591,
 cmd reg name = RCX
+
+
 PUSH command #7
+hash = 76495910,
 cmd second value = 30
+
 POPR command #8
+hash = 76314591,
 cmd reg name = RCY
+
+
 IN command #9
+hash = 72571,
+
 POPR command #10
+hash = 76314591,
 cmd reg name = RDX
+
+
 IN command #11
+hash = 72571,
+
 POPR command #12
+hash = 76314591,
 cmd reg name = AX
+
+
 IN command #13
+hash = 72571,
+
 POPR command #14
+hash = 76314591,
 cmd reg name = AY
+
+
 PUSH command #15
+hash = 76495910,
 cmd second value = 0
+
 POPR command #16
+hash = 76314591,
 cmd reg name = BX
+
+
 PUSH command #17
+hash = 76495910,
 cmd second value = 0
+
 POPR command #18
+hash = 76314591,
 cmd reg name = CX
+
+
 PUSH command #19
+hash = 76495910,
 cmd second value = 0
+
 POPR command #20
+hash = 76314591,
 cmd reg name = CY
+
+
 DUMP command #21
-defined tag_num = :9
+hash = 65408140,
+
+defined tag_name = :cycle
+
 PUSHR command #22
+hash = 2371375752,
 cmd reg name = RCX
+
+
 PUSHR command #23
+hash = 2371375752,
 cmd reg name = BX
+
+
 JB command #24
-label[:6] = 0
+hash = 73160,
+label[:6] = -1
+
+
 DRAW command #25
+hash = 65307452,
+
+
 HLT command #26
-defined tag_num = :1
+hash = 2220592,
+
+defined tag_name = :1
+
+
 PUSHR command #27
+hash = 2371375752,
 cmd reg name = AX
+
 PUSHR command #28
+hash = 2371375752,
 cmd reg name = CX
+
 SUB command #29
+hash = 2556384,
+
 PUSH command #30
+hash = 76495910,
 cmd second value = 1
+
 ADD command #31
+hash = 2003871,
+
 PUSHR command #32
+hash = 2371375752,
 cmd reg name = AX
+
 PUSHR command #33
+hash = 2371375752,
 cmd reg name = CX
+
 SUB command #34
+hash = 2556384,
+
 PUSH command #35
+hash = 76495910,
 cmd second value = 1
+
 ADD command #36
+hash = 2003871,
+
 MUL command #37
+hash = 2377948,
+
 RET command #38
-defined tag_num = :2
+hash = 2511775,
+
+defined tag_name = :2
+
+
 PUSHR command #39
+hash = 2371375752,
 cmd reg name = AY
+
 PUSHR command #40
+hash = 2371375752,
 cmd reg name = CY
+
 SUB command #41
+hash = 2556384,
+
 PUSH command #42
+hash = 76495910,
 cmd second value = 1
+
 ADD command #43
+hash = 2003871,
+
 PUSHR command #44
+hash = 2371375752,
 cmd reg name = AY
+
 PUSHR command #45
+hash = 2371375752,
 cmd reg name = CY
+
 SUB command #46
+hash = 2556384,
+
 PUSH command #47
+hash = 76495910,
 cmd second value = 1
+
 ADD command #48
+hash = 2003871,
+
 MUL command #49
+hash = 2377948,
+
 RET command #50
-defined tag_num = :3
+hash = 2511775,
+
+defined tag_name = :3
+
+
 PUSHR command #51
+hash = 2371375752,
 cmd reg name = RDX
+
+
 PUSHR command #52
+hash = 2371375752,
 cmd reg name = RDX
+
 MUL command #53
+hash = 2377948,
+
 CALL command #54
+hash = 63887714,
 label[:2] = 64
+
+
 CALL command #55
+hash = 63887714,
 label[:1] = 46
+
+
 ADD command #56
+hash = 2003871,
+
 SUB command #57
+hash = 2556384,
+
 RET command #58
-defined tag_num = :4
+hash = 2511775,
+
+defined tag_name = :4
+
+
 PUSHR command #59
+hash = 2371375752,
 cmd reg name = BX
+
+
 PUSHR command #60
+hash = 2371375752,
 cmd reg name = RCY
+
+
 DIV command #61
+hash = 2098607,
+
 POPR command #62
+hash = 76314591,
 cmd reg name = CY
+
+
 PUSHR command #63
+hash = 2371375752,
 cmd reg name = BX
+
+
 PUSHR command #64
+hash = 2371375752,
 cmd reg name = CY
+
+
 PUSHR command #65
+hash = 2371375752,
 cmd reg name = RCY
+
+
 MUL command #66
+hash = 2377948,
+
 SUB command #67
+hash = 2556384,
+
 POPR command #68
+hash = 76314591,
 cmd reg name = CX
+
+
 RET command #69
-defined tag_num = :5
+hash = 2511775,
+
+defined tag_name = :5
+
+
 PUSHR command #70
+hash = 2371375752,
 cmd reg name = BX
+
+
 PUSH command #71
+hash = 76495910,
 cmd second value = 1
+
 ADD command #72
+hash = 2003871,
+
 POPR command #73
+hash = 76314591,
 cmd reg name = BX
+
 RET command #74
-defined tag_num = :6
+hash = 2511775,
+
+
+defined tag_name = :6
+
+
 CALL command #75
+hash = 63887714,
 label[:4] = 94
+
+
 CALL command #76
+hash = 63887714,
 label[:3] = 82
+
+
 PUSH command #77
+hash = 76495910,
 cmd second value = 0
+
 JBE command #78
-label[:7] = 0
+hash = 2270099,
+label[:7] = -1
+
+
 PUSHR command #79
+hash = 2371375752,
 cmd reg name = RBX
+
+
 POPM command #80
+hash = 76314436,
 ram_regname = BX
-defined tag_num = :8
+
+defined tag_name = :8
+
+
 CALL command #81
+hash = 63887714,
 label[:5] = 112
+
+
 JMP command #82
-label[:9] = 38
-defined tag_num = :7
+hash = 2281011,
+label[:cycle] = 38
+
+defined tag_name = :7
+
 PUSHR command #83
+hash = 2371375752,
 cmd reg name = RAX
+
+
 POPM command #84
+hash = 76314436,
 ram_regname = BX
+
 JMP command #85
+hash = 2281011,
 label[:8] = 132
+
 info about assembling:
 size = 142, ncommands = 85
 
 
 PUSH command #1
+hash = 76495910,
 cmd second value = 35
+
+
 POPR command #2
+hash = 76314591,
 cmd reg name = RAX
+
+
 PUSH command #3
+hash = 76495910,
 cmd second value = 46
+
 POPR command #4
+hash = 76314591,
 cmd reg name = RBX
+
+
 PUSH command #5
+hash = 76495910,
 cmd second value = 900
+
 POPR command #6
+hash = 76314591,
 cmd reg name = RCX
+
+
 PUSH command #7
+hash = 76495910,
 cmd second value = 30
+
 POPR command #8
+hash = 76314591,
 cmd reg name = RCY
+
+
 IN command #9
+hash = 72571,
+
 POPR command #10
+hash = 76314591,
 cmd reg name = RDX
+
+
 IN command #11
+hash = 72571,
+
 POPR command #12
+hash = 76314591,
 cmd reg name = AX
+
+
 IN command #13
+hash = 72571,
+
 POPR command #14
+hash = 76314591,
 cmd reg name = AY
+
+
 PUSH command #15
+hash = 76495910,
 cmd second value = 0
+
 POPR command #16
+hash = 76314591,
 cmd reg name = BX
+
+
 PUSH command #17
+hash = 76495910,
 cmd second value = 0
+
 POPR command #18
+hash = 76314591,
 cmd reg name = CX
+
+
 PUSH command #19
+hash = 76495910,
 cmd second value = 0
+
 POPR command #20
+hash = 76314591,
 cmd reg name = CY
+
+
 DUMP command #21
-defined tag_num = :9
+hash = 65408140,
+
+defined tag_name = :cycle
+
 PUSHR command #22
+hash = 2371375752,
 cmd reg name = RCX
+
+
 PUSHR command #23
+hash = 2371375752,
 cmd reg name = BX
+
+
 JB command #24
+hash = 73160,
 label[:6] = 120
+
+
 DRAW command #25
+hash = 65307452,
+
+
 HLT command #26
-defined tag_num = :1
+hash = 2220592,
+
+defined tag_name = :1
+
+
 PUSHR command #27
+hash = 2371375752,
 cmd reg name = AX
+
 PUSHR command #28
+hash = 2371375752,
 cmd reg name = CX
+
 SUB command #29
+hash = 2556384,
+
 PUSH command #30
+hash = 76495910,
 cmd second value = 1
+
 ADD command #31
+hash = 2003871,
+
 PUSHR command #32
+hash = 2371375752,
 cmd reg name = AX
+
 PUSHR command #33
+hash = 2371375752,
 cmd reg name = CX
+
 SUB command #34
+hash = 2556384,
+
 PUSH command #35
+hash = 76495910,
 cmd second value = 1
+
 ADD command #36
+hash = 2003871,
+
 MUL command #37
+hash = 2377948,
+
 RET command #38
-defined tag_num = :2
+hash = 2511775,
+
+defined tag_name = :2
+
+
 PUSHR command #39
+hash = 2371375752,
 cmd reg name = AY
+
 PUSHR command #40
+hash = 2371375752,
 cmd reg name = CY
+
 SUB command #41
+hash = 2556384,
+
 PUSH command #42
+hash = 76495910,
 cmd second value = 1
+
 ADD command #43
+hash = 2003871,
+
 PUSHR command #44
+hash = 2371375752,
 cmd reg name = AY
+
 PUSHR command #45
+hash = 2371375752,
 cmd reg name = CY
+
 SUB command #46
+hash = 2556384,
+
 PUSH command #47
+hash = 76495910,
 cmd second value = 1
+
 ADD command #48
+hash = 2003871,
+
 MUL command #49
+hash = 2377948,
+
 RET command #50
-defined tag_num = :3
+hash = 2511775,
+
+defined tag_name = :3
+
+
 PUSHR command #51
+hash = 2371375752,
 cmd reg name = RDX
+
+
 PUSHR command #52
+hash = 2371375752,
 cmd reg name = RDX
+
 MUL command #53
+hash = 2377948,
+
 CALL command #54
+hash = 63887714,
 label[:2] = 64
+
+
 CALL command #55
+hash = 63887714,
 label[:1] = 46
+
+
 ADD command #56
+hash = 2003871,
+
 SUB command #57
+hash = 2556384,
+
 RET command #58
-defined tag_num = :4
+hash = 2511775,
+
+defined tag_name = :4
+
+
 PUSHR command #59
+hash = 2371375752,
 cmd reg name = BX
+
+
 PUSHR command #60
+hash = 2371375752,
 cmd reg name = RCY
+
+
 DIV command #61
+hash = 2098607,
+
 POPR command #62
+hash = 76314591,
 cmd reg name = CY
+
+
 PUSHR command #63
+hash = 2371375752,
 cmd reg name = BX
+
+
 PUSHR command #64
+hash = 2371375752,
 cmd reg name = CY
+
+
 PUSHR command #65
+hash = 2371375752,
 cmd reg name = RCY
+
+
 MUL command #66
+hash = 2377948,
+
 SUB command #67
+hash = 2556384,
+
 POPR command #68
+hash = 76314591,
 cmd reg name = CX
+
+
 RET command #69
-defined tag_num = :5
+hash = 2511775,
+
+defined tag_name = :5
+
+
 PUSHR command #70
+hash = 2371375752,
 cmd reg name = BX
+
+
 PUSH command #71
+hash = 76495910,
 cmd second value = 1
+
 ADD command #72
+hash = 2003871,
+
 POPR command #73
+hash = 76314591,
 cmd reg name = BX
+
 RET command #74
-defined tag_num = :6
+hash = 2511775,
+
+
+defined tag_name = :6
+
+
 CALL command #75
+hash = 63887714,
 label[:4] = 94
+
+
 CALL command #76
+hash = 63887714,
 label[:3] = 82
+
+
 PUSH command #77
+hash = 76495910,
 cmd second value = 0
+
 JBE command #78
+hash = 2270099,
 label[:7] = 136
+
+
 PUSHR command #79
+hash = 2371375752,
 cmd reg name = RBX
+
+
 POPM command #80
+hash = 76314436,
 ram_regname = BX
-defined tag_num = :8
+
+defined tag_name = :8
+
+
 CALL command #81
+hash = 63887714,
 label[:5] = 112
+
+
 JMP command #82
-label[:9] = 38
-defined tag_num = :7
+hash = 2281011,
+label[:cycle] = 38
+
+defined tag_name = :7
+
 PUSHR command #83
+hash = 2371375752,
 cmd reg name = RAX
+
+
 POPM command #84
+hash = 76314436,
 ram_regname = BX
+
 JMP command #85
+hash = 2281011,
 label[:8] = 132
+
 info about assembling:
 size = 142, ncommands = 85
 

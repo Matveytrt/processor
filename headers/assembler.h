@@ -1,25 +1,10 @@
 #ifndef ASSEMBLER_H
 #define ASSEMBLER_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <string.h>
-#include <assert.h>
-#include <sys/stat.h>
-#include <ctype.h>
-
-#include "spustruct.h"
-#include "logfile.h"
+#include "global.h"
 #include "workwithfile.h"
+#include "asmstruct.h"
 #include "stackstruct.h"
-
-struct Assembler_t 
-{
-    int *labels;
-    StackElement_t *bytecode;
-    size_t bytecode_size;
-};
 
 void InitASM(Assembler_t *assembler);
 size_t Assembling(const char *buff, Assembler_t *assembler);
@@ -32,13 +17,26 @@ void DestroyASM(Assembler_t *assembler);
 #define STARTSIZE buff_size / 2
 #define LABELSIZE 30
 #define NOLABELPTR -1
-#define Brackets 2
-#define StrSize 20
+#define StrSize 30
+#define AlphabetSize 31
 
 #define Bytecode_step       assembler->bytecode++;              \
                             size++;                             \
                             buff += offset;
  
+#define CheckHash(data, size)                       \
+    for (int i = 0; i < size; i++)                  \
+    {                                               \
+        if (data[i].hash == 0)                      \
+        {                                           \
+            data[i].hash = CalcHash(data[i].name);  \
+        }                                           \
+        else                                        \
+        {                                           \
+            break;                                  \
+        }                                           \
+    } 
+
 #endif
 
 #ifdef DEBUGASM

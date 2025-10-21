@@ -1,6 +1,7 @@
 #include "processor.h"
 
 FILE *Logfile = fopen("proc.log", "w");
+
 const char *GetName();
 
 int main()
@@ -12,8 +13,6 @@ int main()
     Processing(&spu);
 
     DestroySPU(&spu);
-    //printf("ram[5] = %d, ram[3] = %d\n", spu.ram[5], spu.ram[3]);
-    fclose(Logfile);
 }
 
 void InitSPU(Processor_t *spu)
@@ -34,13 +33,15 @@ void InitSPU(Processor_t *spu)
     
     INIT(spu->retaddr, RetSize);
 
+    INIT(spu->stk, STARTCAPACITY);
+
 }
 
 void Processing(Processor_t *spu)
 {
     assert(spu);
     
-    const CmdFunc_t cmd[Nfuncs] = {  
+    static CmdFunc_t cmd[Nfuncs] = {  
                                         {PUSH_C,    Push},
                                         {POP_C,     Pop}, 
                                         {ADD_C,     Add}, 
@@ -68,7 +69,7 @@ void Processing(Processor_t *spu)
                                         {DRAW_C,    DRAW},
                                      };
     int command = spu->bytecode[spu->ip];
-    INIT(spu->stk, STARTCAPACITY);
+    
     
     while (command != HLT_C)
     {
@@ -86,17 +87,18 @@ void Processing(Processor_t *spu)
     }
 
     DUMP(spu->stk);
-    DESTROY(spu->stk);
 }
 
 void DestroySPU(Processor_t *spu)
 {
     assert(spu);
 
+    DESTROY(spu->stk);
     DESTROY(spu->retaddr);
     free(spu->ram);
     free(spu->regs);
     free(spu->bytecode);
+    fclose(Logfile);
 }
 
 const char *GetName()

@@ -1,13 +1,7 @@
 #ifndef WORKWITHFILE_H
 #define WORKWITHFILE_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <ctype.h>
-#include <string.h>
-#include <assert.h>
-#include <sys/stat.h>
+#include "global.h"
 
 size_t BuffSize(const char *filename);
 void *ReadBuff(const char *filename, const char *mode, size_t buff_size, void *buff, size_t size);
