@@ -73,6 +73,7 @@ size_t Assembling(const char *buff, Assembler_t *assembler)
                                         {DUMP_C,    "DUMP",   0,   SINGLE_T}, 
                                         {CLEAR_C,   "CLEAR",  0,   SINGLE_T}, 
                                         {DRAW_C,    "DRAW",   0,   SINGLE_T},
+                                        {OUT_C,     "OUT",    0,   SINGLE_T},
                                         {PUSHR_C,   "PUSHR",  0,   REGISTR_T}, 
                                         {POPR_C,    "POPR",   0,   REGISTR_T}, 
                                         {JB_C,      "JB",     0,   LBL_T}, 

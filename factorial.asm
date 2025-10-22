@@ -1,0 +1,32 @@
+IN
+POPR AX ;n
+
+PUSHR AX
+:Result
+PUSH 1
+PUSHR AX
+JA :Factorial
+POPR BX
+PUSHR BX
+PUSH 0
+JE :IsZero
+PUSHR BX
+:end
+HLT
+
+:Factorial
+CALL :Step
+PUSHR AX
+MUL
+JMP :Result
+
+:Step ;n -= 1
+PUSHR AX
+PUSH 1
+SUB
+POPR AX
+RET
+
+:IsZero
+PUSH 1
+JMP :end

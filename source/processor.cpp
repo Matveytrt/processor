@@ -2,7 +2,7 @@
 
 FILE *Logfile = fopen("proc.log", "w");
 
-const char *GetName();
+#define STARTCAPACITY 2
 
 int main()
 {
@@ -22,7 +22,7 @@ void InitSPU(Processor_t *spu)
     size_t buff_size = 0;
     spu->ip = 0;
 
-    spu->bytecode = (StackElement_t*) ReadBuffResult(GetName(), "rb", &buff_size, sizeof(StackElement_t));
+    spu->bytecode = (StackElement_t*) ReadBuffResult("bytecodefile2.txt", "rb", &buff_size, sizeof(StackElement_t));
     assert(spu->bytecode);
 
     spu->regs = (StackElement_t*) calloc(Nregs, sizeof(StackElement_t));
@@ -67,9 +67,9 @@ void Processing(Processor_t *spu)
                                         {PUSHM_C,   PUSHM},
                                         {POPM_C,    POPM},
                                         {DRAW_C,    DRAW},
-                                     };
+                                        {OUT_C,     OUT},
+                                    };
     int command = spu->bytecode[spu->ip];
-    
     
     while (command != HLT_C)
     {
@@ -99,12 +99,4 @@ void DestroySPU(Processor_t *spu)
     free(spu->regs);
     free(spu->bytecode);
     fclose(Logfile);
-}
-
-const char *GetName()
-{
-    const char *file_name = "bytecodefile2.txt";
-    assert(file_name);
-
-    return file_name;    
 }

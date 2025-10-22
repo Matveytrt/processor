@@ -8,10 +8,16 @@
 #include "stackstruct.h"
 #include "spustruct.h"
 
+#define DEBUGSPU
+
 void InitSPU(Processor_t *spu);
 void Processing(Processor_t *spu);
 void DestroySPU(Processor_t *spu);
 
-#define STARTCAPACITY 2
+#endif
 
+#ifdef DEBUGSPU
+    #define ONDEBUGSPU(func) func
+#else
+    #define ONDEBUGSPU(func) 
 #endif

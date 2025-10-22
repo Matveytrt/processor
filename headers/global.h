@@ -1,5 +1,5 @@
-#ifndef LOGFILE_H
-#define LOGFILE_H
+#ifndef GLOBAL_H
+#define GLOBAL_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,17 +10,18 @@
 #include <iostream>
 #include <ctype.h>
 #include <math.h>
+//#include <TXLib.h>
 
 extern FILE *Logfile;
 
-#define Ncommands 26
+#define Ncommands 27
 #define Nregs 16
 #define RetSize 20
-#define Nfuncs 25
+#define Nfuncs 26
 #define RamSize 900
 #define DrawStep 30
 
-enum command_codes
+enum Commands
 {
     HLT_C    = 0,
     PUSH_C   = 1,
@@ -48,9 +49,10 @@ enum command_codes
     PUSHM_C  = 23,
     POPM_C   = 24,
     DRAW_C   = 25,
+    OUT_C    = 26,
 };
 
-enum registers
+enum Registers
 {
     RAX = 0,
     RBX = 1,

@@ -31,6 +31,7 @@ void RET   (Processor_t *spu);
 void PUSHM (Processor_t *spu);
 void POPM  (Processor_t *spu);
 void DRAW  (Processor_t *spu);
+void OUT   (Processor_t *spu);
 
 #define INIT(stk, capacity) StackInit(&stk, capacity, __LINE__);
 

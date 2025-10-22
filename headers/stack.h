@@ -4,8 +4,8 @@
 #include "stackstruct.h"
 #include "global.h"
 
-#define DEBUG
-#define CANARY_DEBUG
+//#define DEBUG
+//#define CANARY_DEBUG
 
 #define ERROR        fprintf(Logfile, "error: %d line: %d\n", err.code, err.line);
 #define INFO         fprintf(Logfile, "stack size = %ld, capacity = %ld\n", stk->size, stk->capacity);

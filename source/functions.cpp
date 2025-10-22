@@ -3,6 +3,7 @@
 #define DO(sign)                                \
 POP(spu->stk, val1)                             \
 POP(spu->stk, val2)                             \
+/*printf("ip = %d\n val1 = %d\n val2 = %d\n", spu->ip, val1, val2);*/ \
 PUSH(spu->stk, val2 sign val1)                  \
 spu->ip++; 
 
@@ -244,4 +245,15 @@ void DRAW(Processor_t *spu)
     fprintf(Logfile, "\n");
     
     spu->ip++;
+}
+
+void OUT(Processor_t *spu)
+{
+    assert(spu);
+
+    int value;
+    POP(spu->stk, value);
+    printf("%d\n", value);
+
+    spu->ip ++;
 }

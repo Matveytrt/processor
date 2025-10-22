@@ -209,6 +209,7 @@ StackErr_t StackDump(Stack_t *stk, int line, const char *filename, const char *s
 {
     assert(stk);
     assert(filename);
+    assert(stkname);
     StackErr_t error = StackVerify(stk, line);
     CHECKFUNCERROR(error)
 
@@ -237,7 +238,10 @@ StackErr_t StackDump(Stack_t *stk, int line, const char *filename, const char *s
                     fprintf(Logfile, "[%ld] = %d\n", i, stk->data[i]);
                 }
             #else
-                fprintf(Logfile, "[%ld] = %d\n", i, stk->data[i]);
+                if (i < stk->size)
+                {
+                    fprintf(Logfile, "[%ld] = %d\n", i, stk->data[i]);
+                }
             #endif    
         }
     }
