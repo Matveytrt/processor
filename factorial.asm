@@ -1,32 +1,37 @@
 IN
 POPR AX ;n
-
-PUSHR AX
-:Result
-PUSH 1
-PUSHR AX
-JA :Factorial
-POPR BX
-PUSHR BX
 PUSH 0
-JE :IsZero
-PUSHR BX
-:end
-HLT
+POPR BX ;result n!
+
+
+    PUSHR AX
+    :cycle
+        PUSH 1
+        PUSHR AX
+        JA :Factorial
+        POPR BX   
+    PUSHR BX
+    PUSH 0
+    JE :IsZero
+
+    PUSHR BX
+    :end
+    OUT
+    HLT
 
 :Factorial
-CALL :Step
-PUSHR AX
-MUL
-JMP :Result
+    CALL :StepDown
+    PUSHR AX
+    MUL
+    JMP :cycle
 
-:Step ;n -= 1
-PUSHR AX
-PUSH 1
-SUB
-POPR AX
-RET
+:StepDown ;n -= 1
+    PUSHR AX
+    PUSH 1
+    SUB
+    POPR AX
+    RET
 
 :IsZero
-PUSH 1
-JMP :end
+    PUSH 1
+    JMP :end

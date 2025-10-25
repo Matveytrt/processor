@@ -37,7 +37,7 @@ StackErr_t StackInit(Stack_t *stk, int capacity, int line)
 
     error = VERIFY(stk);
     //printf("%d\n", error.code);
-    if (error.code == NOERROR)
+    if (error.code == NOERRORS)
     {
         fprintf(Logfile, "Initialisation succses\n");
     }
@@ -126,7 +126,7 @@ StackErr_t StackVerify(Stack_t *stk, int line)
 
     StackErr_t err = {};
     err.line = line;
-    err.type = NOERROR;
+    err.type = NOERRORS;
 
     #ifdef DEBUG
         if (stk == NULL)
@@ -272,7 +272,7 @@ void CheckSize(Stack_t *stk)
     if (stk->size >= (stk->capacity CANDEBUG(-2)))
     {
         stk->capacity *= 2;
-        stk->data = (StackElement_t*) realloc(stk->data, stk->capacity * sizeof(StackElement_t));
+        stk->data = (StackElement_t*) realloc(stk->data, ((size_t) stk->capacity) * sizeof(StackElement_t));
         assert(stk->data != NULL);
 
         for (Ssize_t i = last; i < stk->capacity - 1; i++)
@@ -307,7 +307,7 @@ StackErr_t AllocationStk(Stack_t *stk)
     else
     {
         stk->data = alloc_ptr;
-        err.code = NOERROR;
+        err.code = NOERRORS;
     }
 
     return err;
@@ -366,7 +366,7 @@ int ErrorType(StackErr_t err)
 {
     if (err.code == 0)
     {
-        return NOERROR;
+        return NOERRORS;
     }
     else if (err.code < ERRORS_END)
     {

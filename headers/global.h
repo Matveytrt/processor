@@ -1,6 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+//#include "TXLib.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -10,16 +11,27 @@
 #include <iostream>
 #include <ctype.h>
 #include <math.h>
-//#include <TXLib.h>
 
-extern FILE *Logfile;
+#define DEBUGASM
+#define DEBUGCMD
+#define DEBUGLBL
+
+#define DEBUGSPU
 
 #define Ncommands 27
-#define Nregs 16
-#define RetSize 20
-#define Nfuncs 26
-#define RamSize 900
-#define DrawStep 30
+#define Nregs     16
+
+#define LABELSIZE 30
+#define NOLABELPTR -1
+#define StrSize   30
+#define AlphabetSize 31
+
+#define RetSize   20
+#define Nfuncs    26
+#define RamSize   900
+#define DrawStep  30
+
+extern FILE *Logfile;
 
 enum Commands
 {
@@ -54,22 +66,44 @@ enum Commands
 
 enum Registers
 {
-    RAX = 0,
-    RBX = 1,
-    RCX = 2,
-    RDX = 3,
-    AX  = 4,
-    BX  = 5,
-    CX  = 6,
-    DX  = 7,
-    RAY = 8,
-    RBY = 9,
-    RCY = 10,
-    RDY = 11,
-    AY  = 12,
-    BY  = 13,
-    CY  = 14,
-    DY  = 15,
+    RAX_R = 0,
+    RBX_R = 1,
+    RCX_R = 2,
+    RDX_R = 3,
+    AX_R  = 4,
+    BX_R  = 5,
+    CX_R  = 6,
+    DX_R  = 7,
+    RAY_R = 8,
+    RBY_R = 9,
+    RCY_R = 10,
+    RDY_R = 11,
+    AY_R  = 12,
+    BY_R  = 13,
+    CY_R  = 14,
+    DY_R  = 15,
 };
 
+#endif
+
+#ifdef DEBUGASM
+    #define ONDEBUGASM(func) func
+#else
+    #define ONDEBUGASM(func) 
+#endif
+#ifdef DEBUGCMD
+    #define ONDEBUGCMD(func) func
+#else
+    #define ONDEBUGCMD(func) 
+#endif
+#ifdef DEBUGLBL
+    #define ONDEBUGLBL(func) func
+#else
+    #define ONDEBUGLBL(func) 
+#endif
+
+#ifdef DEBUGSPU
+    #define ONDEBUGSPU(func) func
+#else
+    #define ONDEBUGSPU(func) 
 #endif

@@ -22,7 +22,7 @@ void InitSPU(Processor_t *spu)
     size_t buff_size = 0;
     spu->ip = 0;
 
-    spu->bytecode = (StackElement_t*) ReadBuffResult("bytecodefile2.txt", "rb", &buff_size, sizeof(StackElement_t));
+    spu->bytecode = (StackElement_t*) ReadBuffResult("bytecodefile.bin", "rb", &buff_size, sizeof(StackElement_t));
     assert(spu->bytecode);
 
     spu->regs = (StackElement_t*) calloc(Nregs, sizeof(StackElement_t));
@@ -67,7 +67,7 @@ void Processing(Processor_t *spu)
                                         {PUSHM_C,   PUSHM},
                                         {POPM_C,    POPM},
                                         {DRAW_C,    DRAW},
-                                        {OUT_C,     OUT},
+                                        {OUT_C,     OUTPUT},
                                     };
     int command = spu->bytecode[spu->ip];
     
@@ -78,7 +78,7 @@ void Processing(Processor_t *spu)
             if (command == cmd[i].code)
             {
                 cmd[i].ptr_func(spu);
-                //printf("command = %d, ip = %d\n", cmd[i].code, spu->ip);
+                //ONDEBUGSPU(printf("command = %d, ip = %d\n", cmd[i].code, spu->ip));
                 break;
             }
         }
