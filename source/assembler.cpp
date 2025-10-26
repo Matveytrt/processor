@@ -117,6 +117,7 @@ void Assembling(File_Info_t *info, Assembler_t *assembler)
     int label_index = 0;
 
     assembler->npasses++;
+
     for (size_t j = 0; j < info->nlines; j++)
     {
         char str[StrSize] = "";

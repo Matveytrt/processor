@@ -230,7 +230,7 @@ void POPM(Processor_t *spu)
     spu->ip += 2;
 }
 
-void DRAW(Processor_t *spu)
+/*void DRAW(Processor_t *spu)
 {
     assert(spu);
 
@@ -245,7 +245,7 @@ void DRAW(Processor_t *spu)
     fprintf(Logfile, "\n");
     
     spu->ip++;
-}
+}*/
 
 void OUTPUT(Processor_t *spu)
 {
@@ -258,19 +258,21 @@ void OUTPUT(Processor_t *spu)
     spu->ip ++;
 }
 
-/*void DRAW(Processor_t *spu)
+void DRAW(Processor_t *spu)
 {
     assert(spu);
+    //printf("x = %lg, y = %lg\n", x, y);
+    //fprintf(Logfile, "first = %d, second = %d, third = %d\n", spu->ram[i], spu->ram[i + 1], spu->ram[i + 2]);
+    txCreateWindow(DrawStep, DrawStep, false);
 
-    txCreateWindow(DrawStep, DrawStep);
-
-    if (!txOK())
+    for (int i = 0; i < RamSize; i += 3)
     {
-        txMessageBox ("Не смог создать окно", "Извините", MB_ICONSTOP);
-        return;
+        double y = (i / 3) / DrawStep;
+        double x = (i / 3) % DrawStep;
+        
+        txSetPixel(x, y, RGB(spu->ram[i], spu->ram[i + 1], spu->ram[i + 2]));
     }
-
-    
+    txSleep(1000); 
     
     spu->ip++;
-}*/
+}
