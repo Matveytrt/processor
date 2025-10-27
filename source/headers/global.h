@@ -25,6 +25,7 @@
 #define NOLABELPTR -1
 #define StrSize   30
 #define AlphabetSize 31
+#define NotCmd -1
 
 #define RetSize   20
 #define Nfuncs    26

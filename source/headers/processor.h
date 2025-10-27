@@ -13,9 +13,3 @@ void Processing (Processor_t *spu);
 void DestroySPU (Processor_t *spu);
 
 #endif
-
-#ifdef DEBUGSPU
-    #define ONDEBUGSPU(func) func
-#else
-    #define ONDEBUGSPU(func) 
-#endif

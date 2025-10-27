@@ -2,6 +2,9 @@
 
 FILE *Logfile = fopen("filelisting.log", "w");
 
+void SortHashCmd (Command_t *cmd);
+int BinSearchHash(size_t str_hash, Command_t *cmd, int size);
+int Cmp_int(const void *par1, const void *par2);
 char *SkipComment (char *buff);
 
 #define STARTSIZE info.buff_size / 2
@@ -70,7 +73,8 @@ void Assembling(File_Info_t *info, Assembler_t *assembler)
     FILE *bytecodefile = fopen("bytecodefile.bin", "wb");                                                       // TODO: задавать файл через аргументы командной строки
     assert(bytecodefile);
     
-    static Command_t cmd[Ncommands] = { {HLT_C,     "HLT",    0,   GetSingle},
+    static Command_t cmd[Ncommands] = {
+                                        {HLT_C,     "HLT",    0,   GetSingle},
                                         {POP_C,     "POP",    0,   GetSingle}, 
                                         {RET_C,     "RET",    0,   GetSingle},            
                                         {ADD_C,     "ADD",    0,   GetSingle}, 
@@ -99,17 +103,7 @@ void Assembling(File_Info_t *info, Assembler_t *assembler)
                                         {POPM_C,    "POPM",   0,   GetRam},
                                       };
 
-    for (int i = 0; i < Ncommands; i++)                  
-    {                                               
-        if (cmd[i].hash == 0)                      
-        {                                           
-            cmd[i].hash = CalcHash(cmd[i].name);  
-        }                                           
-        else                                        
-        {                                           
-            break;                                  
-        }                                           
-    }
+    SortHashCmd(cmd);
 
     int ncommands = 0;
     size_t size = 0;
@@ -117,38 +111,38 @@ void Assembling(File_Info_t *info, Assembler_t *assembler)
     int label_index = 0;
 
     assembler->npasses++;
+    ONDEBUGCMD(fprintf(Logfile, "cmd    || ncommand     || size      || cmd hash:              ||\n"));
 
-    for (size_t j = 0; j < info->nlines; j++)
+    for (size_t nline = 0; nline < info->nlines; nline++) //nline
     {
         char str[StrSize] = "";
 
-        char *cmd_str = info->str_data[j].str_ptr;
+        char *cmd_str = info->str_data[nline].str_ptr;
         sscanf(cmd_str, " %s%n", str, &offset);
 
         size_t str_hash = CalcHash(str);
         
         if (*str != ';' && *str != ':' && *str != '\0')
         {
-            for (int i = 0; i < Ncommands; i++)
-                {
-                    if (cmd[i].hash == str_hash)
-                    {
-                        *assembler->bytecode = cmd[i].code;
-                        ncommands++;
-                        assembler->bytecode++;
-                        size++;
-                        cmd_str += offset;
-                        
-                        #ifdef DEBUGCMD
-                        fprintf(Logfile, "------------------------------------------------------------------------------------------------\n");
-                        fprintf(Logfile, "%6s || command #%3d || cmd hash: %12zu || ", str, ncommands, cmd[i].hash);
-                        #endif
-                        
-                        cmd_str = cmd[i].ptr_func(assembler, cmd_str, &size);
+            int index = BinSearchHash(str_hash, cmd, Ncommands);
 
-                        break;
-                    }
-                }
+            if (index != NotCmd)
+            {
+                *assembler->bytecode = cmd[index].code;
+                ncommands++;
+                assembler->bytecode++;
+                size++;
+                cmd_str += offset;
+                
+                #ifdef DEBUGCMD
+                fprintf(Logfile, "------------------------------------------------------------------------------------------------\n");
+                fprintf(Logfile, "%-6s || command 0x%-3d || size 0x%-3ld || cmd hash: %-12ld || ", str, ncommands, size, cmd[index].hash);
+                #endif
+                
+                cmd_str = cmd[index].ptr_func(assembler, cmd_str, &size);
+
+                //break;
+            }
         }
         
         else if (*str == ':')
@@ -174,6 +168,56 @@ void Assembling(File_Info_t *info, Assembler_t *assembler)
     fclose(bytecodefile);
 }
 
+void SortHashCmd (Command_t *cmd)
+{
+    assert(cmd);
+
+    for (int i = 0; i < Ncommands; i++)                  
+    {                                               
+        if (cmd[i].hash == 0)                      
+        {                                           
+            cmd[i].hash = CalcHash(cmd[i].name);  
+        }
+
+        else                                        
+        {                                           
+            break;                                  
+        }                                           
+    }
+
+    qsort(cmd, Ncommands, sizeof(cmd[0]), &Cmp_int);
+}
+
+int BinSearchHash(size_t str_hash, Command_t *cmd, int size)
+{
+    assert(cmd);
+
+    int head = 0;
+    int tail = size;
+    while (head <= tail)
+    {
+        int mid = (tail + head) / 2;
+
+        if (cmd[mid].hash == str_hash)
+        {
+            return mid;
+        }
+
+        else if (cmd[mid].hash > str_hash)
+        {
+            tail = mid - 1;    
+        }
+
+        else
+        {
+            head = mid + 1;
+        }
+        
+    }
+
+    return -1;
+}
+
 char* SkipComment(char* buff) 
 {
     assert(buff);
@@ -183,6 +227,32 @@ char* SkipComment(char* buff)
     return buff;
 }
 
+int Cmp_int(const void *par1, const void *par2)
+{
+    assert(par1);
+    assert(par2);
+
+    Command_t cmd_1 = *(const Command_t *) par1;
+    Command_t cmd_2 = *(const Command_t *) par2;
+    size_t hash_1 = cmd_1.hash;
+    size_t hash_2 = cmd_2.hash;
+
+    if (hash_1 > hash_2)
+    {
+        return 1;
+    }
+
+    else if (hash_1 == hash_2)
+    {
+        return 0;
+    }
+
+    else
+    {
+        return -1;
+    }
+}
+
 void DumpASM (Assembler_t assembler)
 {
     fprintf(Logfile, "\n-------------------------------------------------------------------------------------------------------\n");
@@ -190,12 +260,14 @@ void DumpASM (Assembler_t assembler)
 
     #ifdef DEBUGLBL
         fprintf(Logfile, "init %d labels\n", assembler.nlabels);
+
         for (int i = 0; i < assembler.nlabels; i++)
         {
-            fprintf(Logfile, "label[%2d]: %-20s || hash = %-20zu || ip = %-d\n", i, assembler.labels[i].name, assembler.labels[i].hash, assembler.labels[i].address);
+            fprintf(Logfile, "label[%2d]: %-20s || hash = %-20ld || ip = %-d\n", i, assembler.labels[i].name, assembler.labels[i].hash, assembler.labels[i].address);
             fprintf(Logfile, "-------------------------------------------------------------------------------------------------------\n");    
         }
     #endif
+
 }
 
 void DestroyASM(Assembler_t *assembler)
@@ -206,6 +278,7 @@ void DestroyASM(Assembler_t *assembler)
     {
         free(assembler->labels[i].name);    
     }
+
     free(assembler->bytecode);
     free(assembler->labels);
     fclose(Logfile);

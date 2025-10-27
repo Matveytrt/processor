@@ -272,7 +272,7 @@ void DRAW(Processor_t *spu)
         
         txSetPixel(x, y, RGB(spu->ram[i], spu->ram[i + 1], spu->ram[i + 2]));
     }
-    txSleep(1000); 
+    //txSleep(100); 
     
     spu->ip++;
 }
